@@ -1,0 +1,5 @@
+evtx
+defusedxml
+hexdump
+rich
+textual
