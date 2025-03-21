@@ -156,6 +156,8 @@ class EvtxSearcher(App):
 
         for file in files:
 
+            self.notify(f'Parsing {file} ...')
+
             # Clear existing search results
             self.records = []
 
