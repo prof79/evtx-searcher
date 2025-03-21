@@ -130,10 +130,17 @@ class EvtxSearcher(App):
 
 
     def on_evtx_searcher_search_result(self, message: SearchResult) -> None:
-        if viewer := self.try_query_one('#events'):
+        if len(self.records) == 0:
+            self.notify('No events found.', severity='warning')
+
+        else:
+            viewer = self.try_query_one('#events')
+
+            if viewer is None:
+                viewer = EventViewer()
+                self.mount(viewer)
+
             if isinstance(viewer, EventViewer):
-                if len(self.records) == 0:
-                    self.notify('No events found.', severity='warning')
                 viewer.records = self.records
                 viewer.show_records()
 

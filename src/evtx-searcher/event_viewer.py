@@ -13,6 +13,7 @@ from textual.containers import (
     VerticalGroup,
     VerticalScroll,
 )
+from textual.css.query import NoMatches
 from textual.message import Message
 from textual.widget import Widget
 from textual.widgets import (
@@ -74,8 +75,12 @@ class EventViewer(VerticalScroll):
 
 
     async def on_mount(self) -> None:
-        self.query_one('#log').focus()
-        self.show_records()
+        try:
+            self.query_one('#log').focus()
+            self.show_records()
+        
+        except NoMatches:
+            pass
 
 
     def compose(self) -> ComposeResult:
