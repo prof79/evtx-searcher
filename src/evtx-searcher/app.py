@@ -42,10 +42,6 @@ class EvtxSearcher(App):
     ]
 
 
-    #EVENT_LIMIT = 250
-    EVENT_LIMIT = 250000
-
-
     class SearchResult(Message):
         def __init__(self) -> None:
             super().__init__()
@@ -59,11 +55,13 @@ class EvtxSearcher(App):
                 watch_css: bool = False,
                 ansi_color: bool = False,
                 path: Path = Path.cwd(),
+                limit: int = 1000,
             ):
 
         super().__init__(driver_class, css_path, watch_css, ansi_color)
 
         self.path = path
+        self.limit = limit
 
         self.records: list[dict] = []
 
@@ -176,9 +174,9 @@ class EvtxSearcher(App):
                 if event['Event']['System']['EventID'] == event_id:
                     self.records.append(event)
 
-                if len(self.records) > self.EVENT_LIMIT:
+                if len(self.records) > self.limit:
                     self.notify(
-                        f'Limit of {self.EVENT_LIMIT} events reached, aborting search ...',
+                        f'Limit of {self.limit} events reached, aborting search ...',
                         severity='warning',
                     )
                     break
